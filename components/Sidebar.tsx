@@ -67,8 +67,8 @@ const Sidebar = () => {
           <NextImage src='/logo.png' height={69} width={69} />
           AIODE
         </Box>
+        {/* NAV MENU BOX  */}
         <Box marginBottom='20px'>
-          {/* MENU NAV BOX  */}
           <List spacing={2}>
             {navMenu.map((item) => (
               <Menu name={item.name} icon={item.icon} route={item.route} />
@@ -76,8 +76,8 @@ const Sidebar = () => {
           </List>
         </Box>
         <Divider color='gray.800' />
+        {/* MUSIC MENU BOX */}
         <Box marginTop='20px'>
-          {/* MUSIC MENU BOX */}
           <List spacing={2}>
             {musicMenu.map((item) => (
               <Menu name={item.name} icon={item.icon} route={item.route} />
