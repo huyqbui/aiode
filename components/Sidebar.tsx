@@ -1,5 +1,5 @@
-import NextImage from 'next/image';
-import NextLink from 'next/link'; // allows opt for client side rendering
+import NextImage from "next/image";
+import NextLink from "next/link"; // allows opt for client side rendering
 import {
   Box,
   List,
@@ -9,7 +9,7 @@ import {
   Center,
   LinkBox,
   LinkOverlay,
-} from '@chakra-ui/layout';
+} from "@chakra-ui/layout";
 
 import {
   MdHome,
@@ -17,70 +17,86 @@ import {
   MdLibraryMusic,
   MdPlaylistAdd,
   MdFavorite,
-} from 'react-icons/md';
+} from "react-icons/md";
 
-import Menu from './Menu';
+import Menu from "./Menu";
 
 const navMenu = [
   {
-    name: 'Home',
+    name: "Home",
     icon: MdHome,
-    route: '/',
+    route: "/",
   },
   {
-    name: 'Search',
+    name: "Search",
     icon: MdSearch,
-    route: '/search',
+    route: "/search",
   },
   {
-    name: 'Your Library',
+    name: "Your Library",
     icon: MdLibraryMusic,
-    route: '/library',
+    route: "/library",
   },
 ];
 
 const musicMenu = [
   {
-    name: 'Create Playlist',
+    name: "Create Playlist",
     icon: MdPlaylistAdd,
-    route: '/',
+    route: "/",
   },
   {
-    name: 'Favorites',
+    name: "Favorites",
     icon: MdFavorite,
-    route: '/favorites',
+    route: "/favorites",
   },
 ];
+
+const playlists = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`);
 
 const Sidebar = () => {
   return (
     <Box // outer content box
-      width='100%'
-      height='calc(100vh - 100px)'
-      bg='black'
-      paddingX='5px'
-      color='gray'
+      width="100%"
+      height="calc(100vh - 100px)"
+      bg="black"
+      paddingX="5px"
+      color="gray"
     >
-      <Box paddingY='20px'>
+      <Box paddingY="20px" height="100%">
         {/*  // inner div for all the content */}
-        <Box width='120px' marginBottom='20px' paddingX='20px'>
-          <NextImage src='/logo.png' height={69} width={69} />
+        <Box width="120px" marginBottom="20px" paddingX="20px">
+          <NextImage src="/logo.png" height={69} width={69} />
           AIODE
         </Box>
         {/* NAV MENU BOX  */}
-        <Box marginBottom='20px'>
+        <Box marginBottom="20px">
           <List spacing={2}>
             {navMenu.map((item) => (
               <Menu name={item.name} icon={item.icon} route={item.route} />
             ))}
           </List>
         </Box>
-        <Divider color='gray.800' />
         {/* MUSIC MENU BOX */}
-        <Box marginTop='20px'>
+        <Box marginTop="20px">
           <List spacing={2}>
             {musicMenu.map((item) => (
               <Menu name={item.name} icon={item.icon} route={item.route} />
+            ))}
+          </List>
+        </Box>
+        <Divider color="gray.800" />
+        {/* Box for playlists that can scroll */}
+        <Box paddingY="20px" height="50%" overflowY="auto">
+          <List spacing={2}>
+            {playlists.map((playlist) => (
+              <ListItem paddingX="20px" key={playlist}>
+                <LinkBox>
+                  <NextLink href="/" passHref>
+                    <LinkOverlay>{playlist}</LinkOverlay>
+                  </NextLink>
+                </LinkBox>
+              </ListItem>
             ))}
           </List>
         </Box>
