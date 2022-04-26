@@ -1,19 +1,19 @@
 // build the layout of the app:
 // the sidebar, the bottom playbar, the component for the pages
 
-import { Box } from "@chakra-ui/layout";
-import Sidebar from "./Sidebar";
+import { Box } from '@chakra-ui/layout';
+import Sidebar from './Sidebar';
 
 const PlayerLayout = ({ children }) => {
   return (
-    <Box width="100vw" height="100vh">
-      <Box position="absolute" top="0" width="250px" left="0">
+    <Box width='100vw' height='100vh'>
+      <Box position='absolute' top='0' width='250px' left='0'>
         <Sidebar />
       </Box>
-      <Box marginLeft="250px" marginBottom="100px">
+      <Box marginLeft='250px' marginBottom='100px'>
         {children}
       </Box>
-      <Box position="absolute" left="0" bottom="0">
+      <Box position='absolute' left='0' bottom='0'>
         BOTTOM PLAYER
       </Box>
     </Box>
