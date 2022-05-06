@@ -24,7 +24,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const signupSecret = process.env.SIGNUP_SECRET;
-  // jwt.sign accepts (payload, secret)
   const token = jwt.sign(
     {
       email: user.email,

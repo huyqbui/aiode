@@ -65,9 +65,8 @@ const Sidebar = () => {
     >
       <Box paddingY='20px' height='100%'>
         {/*  // inner div for all the content */}
-        <Box width='120px' marginBottom='20px' paddingX='20px'>
-          <NextImage src='/logo.png' height={69} width={69} />
-          AIODE
+        <Box width='120' marginBottom='20px' paddingX='20px'>
+          <NextImage src='/aiode-logo-wide.png' height={100} width={200} />
         </Box>
         {/* NAV MENU BOX  */}
         <Box marginBottom='20px'>
