@@ -6,12 +6,12 @@ import prisma from '../lib/prisma';
 
 const Home = ({ artists }) => {
   const { user } = useMe();
-
+  console.log('user:', user)
   return (
     <GradientLayout
       roundImage
       color='purple'
-      title={`${user.firstName} ${user.lastName}`}
+      title='Test Name'
       subtitle='profile'
       description={`${user?.playlistCount} public playlists`}
     >
