@@ -25,40 +25,75 @@ import {
 } from 'react-icons/md';
 import { useStoreActions } from 'easy-peasy';
 
-const MusicPlayer = () => {
+const MusicPlayer = ({ songs, activeSong }) => {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [index, setIndex] = useState(0);
+  const [seekVal, setSeekVal] = useState(0.0);
+  const [repeat, setRepeat] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [duration, setDuration] = useState(0.0);
+
+  const setPlayState = (value) => {
+    setIsPlaying(value);
+  };
+
+  const onShuffle = () => {
+    setShuffle((state) => !state);
+  };
+
+  const onRepeat = () => {
+    setRepeat((state) => !state);
+  };
+
   return (
     <Box>
-      <Box>{/* <ReactHowler /> */}</Box>
+      <Box>
+        {/* <ReactHowler playing={isPlaying} src={activeSong?.url} /> */}
+      </Box>
       <Center color='gray.600'>
         <ButtonGroup outline='none' variant='link'>
           <IconButton
             aria-label='shuffle'
             fontSize='24px'
+            color={shuffle ? 'white' : 'gray.600'}
             icon={<MdShuffle />}
+            onClick={onShuffle}
           />
           <IconButton
             aria-label='skip'
             fontSize='24px'
             icon={<MdSkipPrevious />}
           />
-          <IconButton
-            aria-label='play'
-            fontSize='40px'
-            color='white'
-            icon={<MdPlayCircleFilled />}
-          />
-          <IconButton
-            aria-label='pause'
-            fontSize='40px'
-            color='white'
-            icon={<MdPauseCircleFilled />}
-          />
+          {isPlaying ? (
+            <IconButton
+              aria-label='pause'
+              fontSize='40px'
+              color='white'
+              icon={<MdPauseCircleFilled />}
+              onClick={() => setPlayState(false)}
+            />
+          ) : (
+            <IconButton
+              aria-label='play'
+              fontSize='40px'
+              color='white'
+              icon={<MdPlayCircleFilled />}
+              onClick={() => setPlayState(true)}
+            />
+          )}
+
           <IconButton
             aria-label='pause'
             fontSize='24px'
             icon={<MdSkipNext />}
           />
-          <IconButton aria-label='pause' fontSize='24px' icon={<MdRepeat />} />
+          <IconButton
+            aria-label='pause'
+            fontSize='24px'
+            color={repeat ? 'white' : 'gray.600'}
+            icon={<MdRepeat />}
+            onClick={onRepeat}
+          />
         </ButtonGroup>
       </Center>
       <Box color='gray.600'>
