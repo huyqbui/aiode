@@ -32,7 +32,7 @@ export const validateRoute = (handler) => {
   };
 };
 
-export const validateToken = token => {
+export const validateToken = (token) => {
   const user = jwt.verify(token, process.env.LOGIN_SECRET);
   return user;
-}
+};
