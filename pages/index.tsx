@@ -6,7 +6,7 @@ import prisma from '../lib/prisma';
 
 const Home = ({ artists }) => {
   const { user } = useMe();
-  console.log('user:', user)
+  console.log('user:', user);
   return (
     <GradientLayout
       roundImage
