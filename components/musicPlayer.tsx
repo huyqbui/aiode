@@ -28,13 +28,19 @@ import { formatTime } from '../lib/formatters';
 
 const MusicPlayer = ({ songs, activeSong }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(
+    songs.findIndex((s) => s.id === activeSong.id)
+  );
   const [seekVal, setSeekVal] = useState(0.0);
   const [isSeeking, setIsSeeking] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [duration, setDuration] = useState(0.0);
   const soundRef = useRef(null);
+  const repeatRef = useRef(repeat);
+  const changeActiveSong = useStoreActions(
+    (state: any) => state.changeActiveSong
+  );
 
   // tracks playing state and isSeeking state,
   useEffect(() => {
@@ -52,6 +58,15 @@ const MusicPlayer = ({ songs, activeSong }) => {
 
     cancelAnimationFrame(timerId);
   }, [isPlaying, isSeeking]);
+
+  useEffect(() => {
+    changeActiveSong(songs[index]);
+  }, [index, changeActiveSong, songs]);
+
+  // track and update repeatRef
+  useEffect(() => {
+    repeatRef.current = repeat;
+  }, [repeat]);
 
   // callbacks to handle music controls:
   const setPlayState = (value) => {
@@ -89,7 +104,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
 
   // callback when song ends
   const onEnd = () => {
-    if (repeat) {
+    if (repeatRef.current) {
       setSeekVal(0);
       soundRef.current.seek(0);
     } else {
