@@ -24,16 +24,36 @@ import {
   MdRepeat,
 } from 'react-icons/md';
 import { useStoreActions } from 'easy-peasy';
+import { formatTime } from '../lib/formatters';
 
 const MusicPlayer = ({ songs, activeSong }) => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [index, setIndex] = useState(0);
   const [seekVal, setSeekVal] = useState(0.0);
+  const [isSeeking, setIsSeeking] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [duration, setDuration] = useState(0.0);
   const soundRef = useRef(null);
 
+  // tracks playing state and isSeeking state,
+  useEffect(() => {
+    let timerId;
+    // request only if song is playing, and user is not seeking
+    if (isPlaying && !isSeeking) {
+      const updateSeek = () => {
+        setSeekVal(soundRef.current.seek());
+        timerId = requestAnimationFrame(updateSeek);
+      };
+
+      timerId = requestAnimationFrame(updateSeek);
+      return () => cancelAnimationFrame(timerId);
+    }
+
+    cancelAnimationFrame(timerId);
+  }, [isPlaying, isSeeking]);
+
+  // callbacks to handle music controls:
   const setPlayState = (value) => {
     setIsPlaying(value);
   };
@@ -46,10 +66,59 @@ const MusicPlayer = ({ songs, activeSong }) => {
     setRepeat((state) => !state);
   };
 
+  const prevSong = () => {
+    setIndex((state) => {
+      return state ? state - 1 : songs.length - 1;
+    });
+  };
+
+  const nextSong = () => {
+    setIndex((state) => {
+      if (shuffle) {
+        // shuffle logic here
+        const next = Math.floor(Math.random() * songs.length);
+        if (next === state) {
+          return nextSong();
+        }
+        return next;
+      }
+
+      return state === songs.length - 1 ? 0 : state + 1;
+    });
+  };
+
+  // callback when song ends
+  const onEnd = () => {
+    if (repeat) {
+      setSeekVal(0);
+      soundRef.current.seek(0);
+    } else {
+      nextSong();
+    }
+  };
+
+  // callback when loading a song, get the duration
+  const onLoad = () => {
+    const songDuration = soundRef.current.duration();
+    setDuration(songDuration);
+  };
+
+  const onSeek = (e) => {
+    // chakra's range component returns an array of values, so we grab the first value
+    setSeekVal(parseFloat(e[0]));
+    soundRef.current.seek(e[0]);
+  };
+
   return (
     <Box>
       <Box>
-        <ReactHowler playing={isPlaying} src={activeSong?.url} ref={soundRef} />
+        <ReactHowler
+          playing={isPlaying}
+          src={activeSong?.url}
+          ref={soundRef}
+          onLoad={onLoad}
+          onEnd={onEnd}
+        />
       </Box>
       <Center color='gray.600'>
         <ButtonGroup outline='none' variant='link'>
@@ -61,9 +130,10 @@ const MusicPlayer = ({ songs, activeSong }) => {
             onClick={onShuffle}
           />
           <IconButton
-            aria-label='skip'
+            aria-label='previous'
             fontSize='24px'
             icon={<MdSkipPrevious />}
+            onClick={prevSong}
           />
           {isPlaying ? (
             <IconButton
@@ -84,12 +154,13 @@ const MusicPlayer = ({ songs, activeSong }) => {
           )}
 
           <IconButton
-            aria-label='pause'
+            aria-label='skip next'
             fontSize='24px'
             icon={<MdSkipNext />}
+            onClick={nextSong}
           />
           <IconButton
-            aria-label='pause'
+            aria-label='repeat'
             fontSize='24px'
             color={repeat ? 'white' : 'gray.600'}
             icon={<MdRepeat />}
@@ -100,7 +171,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
       <Box color='gray.600'>
         <Flex justify='center' align='center'>
           <Box width='10%'>
-            <Text fontSize='xs'>0:00</Text>
+            <Text fontSize='xs'>{formatTime(seekVal)}</Text>
           </Box>
           <Box width='80%'>
             <RangeSlider
@@ -108,8 +179,12 @@ const MusicPlayer = ({ songs, activeSong }) => {
               aria-label={['min', 'max']}
               step={0.1}
               min={0}
-              max={321}
+              max={duration ? parseFloat(duration.toFixed(2)) : 0}
               id='player-range'
+              onChange={onSeek}
+              value={[seekVal]}
+              onChangeStart={() => setIsSeeking(true)}
+              onChangeEnd={() => setIsSeeking(false)}
             >
               <RangeSliderTrack bg='gray.800'>
                 <RangeSliderFilledTrack bg='gray.600' />
@@ -118,7 +193,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
             </RangeSlider>
           </Box>
           <Box width='10%' textAlign='right'>
-            <Text fontSize='xs'>3:00</Text>
+            <Text fontSize='xs'>{formatTime(duration)}</Text>
           </Box>
         </Flex>
       </Box>
