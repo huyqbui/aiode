@@ -26,11 +26,7 @@ const PlayerBarContianer = () => {
         ) : (
           <Box padding='20px' color='gray.400' width='40%' />
         )}
-        <Box padding='20px' color='gray.400' width='30%'>
-          <Text fontSize='large' align='right'>
-            VOLUME CONTROLS
-          </Text>
-        </Box>
+        <Box padding='20px' color='gray.400' width='30%' />
       </Flex>
     </Box>
   );
