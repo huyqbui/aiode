@@ -20,6 +20,7 @@ import {
 } from 'react-icons/md';
 
 import Menu from './Menu';
+import { usePlaylist } from '../lib/hooks';
 
 const navMenu = [
   {
@@ -52,9 +53,11 @@ const musicMenu = [
   },
 ];
 
-const playlists = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`);
-
 const Sidebar = () => {
+  const data = usePlaylist();
+  let playlists;
+  if (data) playlists = data.playlists;
+
   return (
     <Box // outer content box
       width='100%'
@@ -77,7 +80,7 @@ const Sidebar = () => {
           </List>
         </Box>
         {/* MUSIC MENU BOX */}
-        <Box marginTop='20px'>
+        <Box marginTop='20px' marginBottom='20px'>
           <List spacing={2}>
             {musicMenu.map((item) => (
               <Menu name={item.name} icon={item.icon} route={item.route} />
@@ -89,10 +92,16 @@ const Sidebar = () => {
         <Box paddingY='20px' height='50%' overflowY='auto'>
           <List spacing={2}>
             {playlists.map((playlist) => (
-              <ListItem paddingX='20px' key={playlist}>
+              <ListItem paddingX='20px' key={playlist.id}>
                 <LinkBox>
-                  <NextLink href='/' passHref>
-                    <LinkOverlay>{playlist}</LinkOverlay>
+                  <NextLink
+                    href={{
+                      pathname: '/playlist/[id]',
+                      query: { id: playlist.id },
+                    }}
+                    passHref
+                  >
+                    <LinkOverlay>{playlist.name}</LinkOverlay>
                   </NextLink>
                 </LinkBox>
               </ListItem>

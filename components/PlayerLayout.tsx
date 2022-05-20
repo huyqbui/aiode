@@ -2,6 +2,7 @@
 // the sidebar, the bottom playbar, the component for the pages
 
 import { Box } from '@chakra-ui/layout';
+import PlayerBarContainer from './playerBarContainer';
 import Sidebar from './Sidebar';
 
 const PlayerLayout = ({ children }) => {
@@ -11,10 +12,10 @@ const PlayerLayout = ({ children }) => {
         <Sidebar />
       </Box>
       <Box marginLeft='250px' marginBottom='100px'>
-        {children}
+        <Box height='calc(100vh - 100px)'>{children}</Box>
       </Box>
       <Box position='absolute' left='0' bottom='0'>
-        BOTTOM PLAYER
+        <PlayerBarContainer />
       </Box>
     </Box>
   );

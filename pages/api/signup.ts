@@ -5,6 +5,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
 import 'dotenv/config';
 
+const EIGHT_HOURS = 8 * 60 * 60;
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const salt = bcrypt.genSaltSync();
   const { email, password } = req.body;
@@ -38,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     'Set-Cookie',
     cookie.serialize('AIODE_SIGNUP_ACCESS_TOKEN', token, {
       httpOnly: true,
-      maxAge: 8 * 60 * 60,
+      maxAge: EIGHT_HOURS,
       path: '/',
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
