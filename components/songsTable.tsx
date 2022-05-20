@@ -53,7 +53,6 @@ const SongsTable = ({ songs }) => {
                 key={song.id}
                 cursor='pointer'
                 onClick={() => {
-                  console.log('song:', song);
                   handlePlay(song);
                 }}
               >

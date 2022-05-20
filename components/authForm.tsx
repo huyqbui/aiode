@@ -3,12 +3,12 @@ import { Input, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import { useSWRConfig } from 'swr';
 import NextImage from 'next/image';
 import { auth } from '../lib/mutations';
 
 // useSWRConfig is the hook we'll use to update the local cache of our app
 // propagate data we receive across our whole app
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 const AuthForm: FC<{ mode: 'login' | 'signup' }> = ({ mode }) => {
   const [email, setEmail] = useState('');
@@ -25,9 +25,6 @@ const AuthForm: FC<{ mode: 'login' | 'signup' }> = ({ mode }) => {
     router.push('/');
   };
 
-  const handleSignup = (e) => {
-    router.push('/signup');
-  };
   return (
     <Box height='100vh' width='100vw' bg='black'>
       <Flex
