@@ -20,7 +20,7 @@ import {
   MdPauseCircleFilled,
   MdRepeat,
 } from 'react-icons/md';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { formatTime } from '../lib/formatters';
 
 const MusicPlayer = ({ songs, activeSong }) => {
@@ -38,6 +38,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
   const changeActiveSong = useStoreActions(
     (state: any) => state.changeActiveSong
   );
+  const stateVolume = useStoreState((state: any) => state.volume);
 
   // tracks playing state and isSeeking state,
   useEffect(() => {
@@ -94,7 +95,6 @@ const MusicPlayer = ({ songs, activeSong }) => {
         }
         return next;
       }
-
       return state === songs.length - 1 ? 0 : state + 1;
     });
   };
@@ -130,6 +130,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
           ref={soundRef}
           onLoad={onLoad}
           onEnd={onEnd}
+          volume={stateVolume}
         />
       </Box>
       <Center color='gray.600'>
@@ -199,7 +200,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
               onChangeEnd={() => setIsSeeking(false)}
             >
               <RangeSliderTrack bg='gray.800'>
-                <RangeSliderFilledTrack bg='gray.600' />
+                <RangeSliderFilledTrack bg='gray.400' />
               </RangeSliderTrack>
               <RangeSliderThumb index={0} />
             </RangeSlider>
