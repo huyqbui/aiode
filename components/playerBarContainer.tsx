@@ -6,6 +6,7 @@ import VolumeController from './VolumeController';
 const PlayerBarContainer = () => {
   const songs = useStoreState((state: any) => state.activeSongs);
   const activeSong = useStoreState((state: any) => state.activeSong);
+  const volume = useStoreState((state: any) => state.volume);
 
   return (
     <Box height='100px' width='100vw' bg='gray.900' padding='10px'>
@@ -22,7 +23,7 @@ const PlayerBarContainer = () => {
               <MusicPlayer songs={songs} activeSong={activeSong} />
             </Box>
             <Box padding='20px' color='gray.100' width='30%'>
-              <VolumeController />
+              <VolumeController volume={volume} />
             </Box>
           </>
         ) : (

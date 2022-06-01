@@ -186,7 +186,7 @@ const MusicPlayer = ({ songs, activeSong }) => {
           <Box width='10%'>
             <Text fontSize='xs'>{formatTime(seekVal)}</Text>
           </Box>
-          <Box width='80%'>
+          <Box width='80%' className='player-slider'>
             <RangeSlider
               // eslint-disable-next-line jsx-a11y/aria-proptypes
               aria-label={['min', 'max']}
@@ -200,9 +200,23 @@ const MusicPlayer = ({ songs, activeSong }) => {
               onChangeEnd={() => setIsSeeking(false)}
             >
               <RangeSliderTrack bg='gray.800'>
-                <RangeSliderFilledTrack bg='gray.400' />
+                <RangeSliderFilledTrack
+                  bg='gray.400'
+                  _hover={{
+                    bg: 'purple.400',
+                  }}
+                />
               </RangeSliderTrack>
-              <RangeSliderThumb index={0} />
+              <RangeSliderThumb
+                index={0}
+                sx={{
+                  visibility: 'hidden',
+                  transition: 'all .05s',
+                  '.player-slider:hover &': {
+                    visibility: 'visible',
+                  },
+                }}
+              />
             </RangeSlider>
           </Box>
           <Box width='10%' textAlign='right'>
